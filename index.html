@@ -18,10 +18,23 @@
     </li>
 </ul>
 
+<hr>
+
+<div id="myTitleRoot">
+    <my-title></my-title>
+</div>
+
+<hr>
+
+<div id="root">
+    <my-list collection="xMen"></my-list>
+    <my-list collection="avengers"></my-list>
+</div>
+
 <script src="js/bower_components/vue/dist/vue.min.js"></script>
 
 <script>
-    var Model = function (fields) {
+    var Model = function(fields) {
         this.fields = fields
     };
 
@@ -48,6 +61,54 @@
 
     getListView('#xmen-list', xMen);
     getListView('#avengers-list', avengers);
+
+    //-----
+
+    Vue.component("my-title", {
+        template: "<h1>{{title}}</h1>",
+        ready: function() {
+            console.log("Ready!");
+        },
+        data: function() {
+            return {
+                title: "Hello World"
+            }
+        }
+    });
+
+    var MyTitleDivView = new Vue({el: "#myTitleRoot"});
+
+    //-----
+
+    var collections = {
+        xMen: xMen,
+        avengers: avengers
+    };
+
+    Vue.component("my-list", {
+        paramAttributes: ['collection'], // permet d'utiliser des attributs <my-list collection="xMen"></my-list>
+        template: [
+            '<ul>',
+            '   <li v-repeat="characters">',
+            '       {{fields.name}}',
+            '   </li>',
+            '</ul>'
+        ].join(''),
+        ready: function() {
+            this.$data = {
+                characters: collections[this.collection] // modifier la propriété $data
+            }
+        },
+        data: function() { // initialiser les données (facultatif)
+            return {
+                characters: []
+            }
+        }
+    });
+
+    var DivView = new Vue({el: "#root"});
+    //il faut qu'une vue existe pour que les composants y soient raccrochés
+
 </script>
 
 </body>
