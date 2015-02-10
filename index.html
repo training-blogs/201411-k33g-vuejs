@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>demo</title>
+</head>
+<body>
+
+<ul id="xmen-list">
+    <li v-repeat="characters">
+        {{fields.name}}
+    </li>
+</ul>
+
+<ul id="avengers-list">
+    <li v-repeat="characters">
+        {{fields.name}}
+    </li>
+</ul>
+
+<script src="js/bower_components/vue/dist/vue.min.js"></script>
+
+<script>
+    var Model = function (fields) {
+        this.fields = fields
+    };
+
+    var xMen = [
+        new Model({name: "Wolverine"}),
+        new Model({name: "Colossus"}),
+        new Model({name: "Cyclops"})
+    ];
+
+    var avengers = [
+        new Model({name: "Iron Man"}),
+        new Model({name: "Captain America"}),
+        new Model({name: "Thor"})
+    ];
+
+    var getListView = function(selector, collection) {
+        return new Vue({
+            el: selector,
+            data: {
+                characters: collection
+            }
+        })
+    };
+
+    getListView('#xmen-list', xMen);
+    getListView('#avengers-list', avengers);
+</script>
+
+</body>
+</html>
